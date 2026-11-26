@@ -1,0 +1,498 @@
+
+/* =========================================================
+   1. COLOR PALETTE
+
+   Define the colors once so that the appearance of the
+   entire website can easily be changed here.
+   ========================================================= */
+
+:root {
+    --background: #f5ecd7;
+    --panel: #fffaf0;
+    --text: #49351f;
+    --heading: #76501e;
+
+    --gold: #a67c32;
+    --dark-gold: #8c6429;
+    --border: #c5a35c;
+    --light-border: #d9c395;
+
+    --secondary: #eee0bd;
+    --secondary-hover: #ddc99b;
+    --saved-background: #f2e6cb;
+    --muted: #99876b;
+
+    --red: #a23b32;
+    --dark-red: #802c25;
+}
+
+
+/* =========================================================
+   2. GENERAL PAGE STYLING
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    margin-top: 0;
+    color: var(--heading);
+}
+
+h3 {
+    font-size: 16px;
+    margin: 20px 0 12px;
+}
+
+p {
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   3. PAGE MANAGEMENT
+
+   Only the active page is visible. JavaScript controls
+   page visibility using the HTML hidden attribute.
+   ========================================================= */
+
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page[hidden] {
+    display: none;
+}
+
+#home-page,
+#solve-page {
+    text-align: center;
+}
+
+#home-page {
+    padding: 60px 20px;
+}
+
+
+/* =========================================================
+   4. BUTTONS
+
+   All buttons inherit these default styles.
+   Individual button types override them where necessary.
+   ========================================================= */
+
+button {
+    padding: 11px 20px;
+    border: 1px solid var(--dark-gold);
+    border-radius: 5px;
+    background-color: var(--gold);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--dark-gold);
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Secondary buttons, such as Clear All and Edit Requirements. */
+
+.secondary-button {
+    background-color: var(--secondary);
+    color: var(--text);
+}
+
+.secondary-button:hover:not(:disabled) {
+    background-color: var(--secondary-hover);
+}
+
+/* Remove buttons inside submitted requirement groups. */
+
+.remove-button {
+    padding: 5px 9px;
+    border-color: var(--red);
+    background-color: var(--red);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.remove-button:hover:not(:disabled) {
+    background-color: var(--dark-red);
+}
+
+/* Submit buttons fill the width of their requirement panel. */
+
+.panel > button {
+    width: 100%;
+}
+
+
+/* =========================================================
+   5. NAVIGATION AND SOLVER CONTROLS
+
+   Both button containers use centered, wrapping flex layouts.
+   ========================================================= */
+
+.main-navigation,
+.solver-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.main-navigation {
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.main-navigation button {
+    width: 200px;
+    max-width: 100%;
+    padding: 15px 25px;
+    border: 2px solid var(--gold);
+    border-radius: 6px;
+    background-color: var(--secondary);
+    color: var(--text);
+    font-size: 18px;
+}
+
+.main-navigation button:hover:not(:disabled) {
+    background-color: var(--secondary-hover);
+}
+
+/* Highlight the currently selected page. */
+
+.main-navigation button.active {
+    background-color: var(--gold);
+    color: white;
+}
+
+.main-navigation button.active:hover:not(:disabled) {
+    background-color: var(--dark-gold);
+}
+
+.solver-controls {
+    gap: 15px;
+    margin: 30px 0;
+}
+
+#solve-button {
+    padding: 14px 40px;
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   6. REQUIREMENT PANELS
+
+   Display connected and disconnected requirements
+   side by side on larger screens.
+   ========================================================= */
+
+.requirements-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 24px;
+}
+
+.panel {
+    min-width: 0;
+    padding: 24px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background-color: var(--panel);
+}
+
+
+/* =========================================================
+   7. CHARACTER CHECKBOXES
+
+   Connected characters use two columns.
+   Each disconnected group uses one column.
+   ========================================================= */
+
+.character-options,
+.disconnected-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.character-options {
+    gap: 10px;
+    margin: 15px 0 20px;
+}
+
+.character-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.character-option input {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    accent-color: var(--gold);
+    cursor: pointer;
+}
+
+/* Fade characters that cannot currently be selected. */
+
+.character-option:has(input:disabled) {
+    opacity: 0.35;
+}
+
+.character-option:has(input:disabled),
+.character-option input:disabled {
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   8. DISCONNECTED CHARACTER GROUPS
+
+   Group A and Group B are displayed side by side,
+   with a single column of checkboxes in each group.
+   ========================================================= */
+
+.disconnected-columns {
+    gap: 20px;
+}
+
+.disconnected-columns > div {
+    min-width: 0;
+}
+
+.disconnected-columns .character-options {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.disconnected-columns h3 {
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--light-border);
+}
+
+
+/* =========================================================
+   9. SUBMITTED REQUIREMENTS
+
+   These styles are shared by the editable requirements
+   on the Set Puzzle page and the read-only requirements
+   underneath the completed puzzle.
+   ========================================================= */
+
+.saved-groups {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    min-height: 70px;
+    padding: 12px;
+    border: 1px solid var(--light-border);
+    border-radius: 6px;
+    background-color: var(--saved-background);
+}
+
+.saved-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--light-border);
+    border-radius: 5px;
+    background-color: var(--panel);
+    font-size: 13px;
+}
+
+.group-content {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Placeholder displayed when no requirements exist. */
+
+.empty-message {
+    color: var(--muted);
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Separator between two disconnected character groups. */
+
+.disconnection-symbol {
+    display: block;
+    margin: 4px 0;
+    color: var(--red);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   10. PUZZLE BOARD
+
+   The canvas retains its original image resolution,
+   but its displayed width is limited to 800 pixels.
+
+   On smaller screens, the board automatically scales
+   down while preserving its aspect ratio.
+   ========================================================= */
+
+#board {
+    width: 800px;
+    max-width: 100%;
+    margin: 20px auto;
+}
+
+#board-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* =========================================================
+   11. SOLVER STATUS AND TEXT OUTPUT
+   ========================================================= */
+
+#requirements-summary,
+#status {
+    font-weight: bold;
+}
+
+#requirements-summary {
+    margin: 20px 0;
+    color: var(--heading);
+    font-size: 14px;
+}
+
+#status {
+    text-align: center;
+}
+
+/* Optional text output from the solver. */
+
+#result {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid var(--light-border);
+    border-radius: 6px;
+    background-color: var(--panel);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+#result:empty {
+    display: none;
+}
+
+
+/* =========================================================
+   12. REQUIREMENTS BELOW THE SOLVED PUZZLE
+
+   Reuse the existing requirement panel styles.
+   Only specify styles unique to this section.
+   ========================================================= */
+
+#solution-requirements {
+    max-width: 1000px;
+    margin: 35px auto;
+    padding-top: 25px;
+    border-top: 2px solid var(--border);
+}
+
+#solution-requirements h2 {
+    margin-bottom: 20px;
+}
+
+#solution-requirements h3 {
+    margin-top: 0;
+    color: var(--heading);
+}
+
+#solution-requirements .panel {
+    text-align: left;
+}
+
+
+/* =========================================================
+   13. RESPONSIVE LAYOUT
+
+   Stack the main requirement panels vertically when
+   the browser window becomes too narrow.
+   ========================================================= */
+
+@media (max-width: 900px) {
+    body {
+        padding: 15px;
+    }
+
+    .requirements-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Pin footer to the bottom of the screen */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Footer styling */
+.site-footer {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    text-align: center;
+    border-top: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.github-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
